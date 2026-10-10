@@ -4,14 +4,13 @@ import {
   ActivityIndicator,
   FlatList,
   RefreshControl,
-  ScrollView,
   View,
 } from "react-native";
 
-import { Chip } from "@/components/common/chip";
 import { SearchInput } from "@/components/common/searchInput";
 import { StateView } from "@/components/common/stateView";
 import { NoteCard } from "@/components/features/notes/noteCard";
+import { TagFilterArrows } from "@/components/features/notes/tagFilter";
 import { Screen, ScreenHeader } from "@/components/layout/screen";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
@@ -19,14 +18,6 @@ import { useNotesAndTags } from "@/hooks/useNotesAndTags";
 import { usePaginatedNotes } from "@/hooks/usePaginatedNotes";
 import { useTabBarInset } from "@/hooks/useTabBarInset";
 import { notesLabel } from "@/utils/plural";
-
-// Long tag names would stretch the filter chips; keep them short.
-const TAG_CHIP_MAX_LENGTH = 16;
-
-const shortenTagName = (name: string) =>
-  name.length > TAG_CHIP_MAX_LENGTH
-    ? `${name.slice(0, TAG_CHIP_MAX_LENGTH)}…`
-    : name;
 
 export default function NotesScreen() {
   const bottomInset = useTabBarInset();
@@ -121,29 +112,11 @@ export default function NotesScreen() {
       </View>
 
       {tags.length > 0 && (
-        // Same side margins as the search field; chips that don't fit are
-        // clipped at its edge and stay reachable by scrolling.
-        <View className="mx-5 mb-3 overflow-hidden rounded-full">
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerClassName="gap-[7px]"
-          >
-            <Chip
-              label="All"
-              isActive={activeTagId === null}
-              onPress={() => setActiveTagId(null)}
-            />
-            {tags.map((tag) => (
-              <Chip
-                key={tag.id}
-                label={shortenTagName(tag.name)}
-                isActive={activeTagId === tag.id}
-                onPress={() => setActiveTagId(tag.id)}
-              />
-            ))}
-          </ScrollView>
-        </View>
+        <TagFilterArrows
+          tags={tags}
+          activeTagId={activeTagId}
+          onChange={setActiveTagId}
+        />
       )}
 
       <FlatList
