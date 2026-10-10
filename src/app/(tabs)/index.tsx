@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { RefreshControl, ScrollView, View } from "react-native";
 
 import { StateView } from "@/components/common/stateView";
+import { ActivityCalendar } from "@/components/features/activityCalendar";
 import { KpiCard } from "@/components/features/kpiCard";
 import { RecentNotes } from "@/components/features/notes/recentNotes";
 import { TagDistribution } from "@/components/features/tagDistribution";
@@ -29,8 +30,10 @@ export default function DashboardScreen() {
     fetchCurrentUser();
   }, [fetchCurrentUser]);
 
-  const { notesTrend, tagsTrend, notesWeek, weekTrend } = getDashboardKpis(notes, tags);
-  const favoriteTags = tags.filter((tag) => tagAppearance[String(tag.id)]?.isFavorite).length;
+  // `notesWeek`, `weekTrend` and `favoriteTags` fed the "This week" and
+  // "Favorites" cards, commented out below in favor of the activity calendar.
+  const { notesTrend, tagsTrend /*, notesWeek, weekTrend */ } = getDashboardKpis(notes, tags);
+  // const favoriteTags = tags.filter((tag) => tagAppearance[String(tag.id)]?.isFavorite).length;
   const distribution = getTagDistribution(notes, tags, tagAppearance);
   const recentNotes = sortByNewest(notes).slice(0, 3);
   const hasData = notes.length > 0 || tags.length > 0;
@@ -65,11 +68,14 @@ export default function DashboardScreen() {
                 <KpiCard label="Total notes" value={Math.max(totalItems, notes.length)} icon="document-text-outline" tone="brand" trend={notesTrend} />
                 <KpiCard label="Tags" value={tags.length} icon="pricetag-outline" tone="success" trend={tagsTrend} />
               </View>
+              {/* Replaced by the activity calendar below (design v5).
               <View className="flex-row gap-3">
                 <KpiCard label="This week" value={notesWeek} icon="time-outline" tone="info" trend={weekTrend} />
                 <KpiCard label="Favorites" value={favoriteTags} icon="star" tone="warning" />
-              </View>
+              </View> */}
             </View>
+
+            <ActivityCalendar notes={notes} />
 
             {distribution.length > 0 && <TagDistribution items={distribution} />}
 
