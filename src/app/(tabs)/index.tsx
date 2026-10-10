@@ -5,6 +5,7 @@ import { StateView } from "@/components/common/stateView";
 import { ActivityCalendar } from "@/components/features/activityCalendar";
 import { KpiCard } from "@/components/features/kpiCard";
 import { RecentNotes } from "@/components/features/notes/recentNotes";
+import { QuickCreateMenu } from "@/components/features/quickCreate";
 import { TagDistribution } from "@/components/features/tagDistribution";
 import { Screen } from "@/components/layout/screen";
 import { Text } from "@/components/ui/text";
@@ -51,10 +52,13 @@ export default function DashboardScreen() {
           <View className="h-[42px] w-[42px] items-center justify-center rounded-full bg-brand/10">
             <Text className="text-sm font-bold text-brand">{userInitials}</Text>
           </View>
-          <View>
-            <Text className="text-base font-bold leading-5">Hi, {userName}</Text>
+          <View className="flex-1">
+            <Text numberOfLines={1} className="text-base font-bold leading-5">
+              Hi, {userName}
+            </Text>
             <Text className="text-[12.5px] text-muted-foreground">Overview of your notes</Text>
           </View>
+          <QuickCreateMenu />
         </View>
 
         {!hasData && isLoading ? (
