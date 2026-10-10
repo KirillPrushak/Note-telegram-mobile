@@ -26,6 +26,7 @@
 
     /* Brand accent + semantic colors (design: Note-telegram Mobile) */
     --brand: 18 37% 52%;
+    --brand-secondary: 18 40% 90%;
     --brand-foreground: 0 0% 100%;
     --success: 142 76% 36%;
     --info: 221 83% 53%;
@@ -59,6 +60,7 @@
     --ring: 300 0% 45%;
 
     --brand: 19 49% 62%;
+    --brand-secondary: 18 37% 22%;
     --brand-foreground: 0 0% 100%;
     --success: 142 69% 58%;
     --info: 213 94% 68%;
