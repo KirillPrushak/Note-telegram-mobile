@@ -1,6 +1,12 @@
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, RefreshControl, ScrollView, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  RefreshControl,
+  ScrollView,
+  View,
+} from "react-native";
 
 import { Chip } from "@/components/common/chip";
 import { SearchInput } from "@/components/common/searchInput";
@@ -14,11 +20,27 @@ import { usePaginatedNotes } from "@/hooks/usePaginatedNotes";
 import { useTabBarInset } from "@/hooks/useTabBarInset";
 import { notesLabel } from "@/utils/plural";
 
+// Long tag names would stretch the filter chips; keep them short.
+const TAG_CHIP_MAX_LENGTH = 16;
+
+const shortenTagName = (name: string) =>
+  name.length > TAG_CHIP_MAX_LENGTH
+    ? `${name.slice(0, TAG_CHIP_MAX_LENGTH)}…`
+    : name;
+
 export default function NotesScreen() {
   const bottomInset = useTabBarInset();
   const { tags } = useNotesAndTags();
-  const { notes, totalItems, hasMore, isLoading, isLoadingMore, error, refresh, fetchNextPage } =
-    usePaginatedNotes();
+  const {
+    notes,
+    totalItems,
+    hasMore,
+    isLoading,
+    isLoadingMore,
+    error,
+    refresh,
+    fetchNextPage,
+  } = usePaginatedNotes();
   const [query, setQuery] = useState("");
   const [activeTagId, setActiveTagId] = useState<number | null>(null);
 
@@ -30,20 +52,29 @@ export default function NotesScreen() {
   const visibleNotes = notes.filter(
     (note) =>
       (activeTagId === null || note.tag_id === activeTagId) &&
-      (!normalizedQuery || note.message?.toLowerCase().includes(normalizedQuery)),
+      (!normalizedQuery ||
+        note.message?.toLowerCase().includes(normalizedQuery)),
   );
 
   // An empty filtered list never reaches its end, so keep paging until a
   // match shows up or the pages run out.
-  const needsMoreForFilter = isFiltering && visibleNotes.length === 0 && hasMore;
+  const needsMoreForFilter =
+    isFiltering && visibleNotes.length === 0 && hasMore;
   useEffect(() => {
     if (needsMoreForFilter && !isLoadingMore) fetchNextPage();
   }, [needsMoreForFilter, isLoadingMore, fetchNextPage]);
 
   const renderEmpty = () => {
-    if (isLoading || (isFiltering && hasMore)) return <StateView type="loading" />;
-    if (error) return <StateView type="error" message={error} onRetry={refresh} />;
-    return <StateView type="empty" message={notes.length === 0 ? "No notes yet" : "Nothing found"} />;
+    if (isLoading || (isFiltering && hasMore))
+      return <StateView type="loading" />;
+    if (error)
+      return <StateView type="error" message={error} onRetry={refresh} />;
+    return (
+      <StateView
+        type="empty"
+        message={notes.length === 0 ? "No notes yet" : "Nothing found"}
+      />
+    );
   };
 
   const renderFooter = () => {
@@ -76,23 +107,37 @@ export default function NotesScreen() {
       <View className="gap-3 px-5 pb-3">
         <ScreenHeader
           title="Notes"
-          action={{ icon: "add", label: "New note", onPress: () => router.push("/note/new") }}
+          action={{
+            icon: "add",
+            label: "New note",
+            onPress: () => router.push("/note/new"),
+          }}
         />
-        <SearchInput value={query} onChangeText={setQuery} placeholder="Search notes" />
+        <SearchInput
+          value={query}
+          onChangeText={setQuery}
+          placeholder="Search notes"
+        />
       </View>
 
       {tags.length > 0 && (
-        <View>
+        // Same side margins as the search field; chips that don't fit are
+        // clipped at its edge and stay reachable by scrolling.
+        <View className="mx-5 mb-3 overflow-hidden rounded-full">
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerClassName="gap-[7px] px-5 pb-3"
+            contentContainerClassName="gap-[7px]"
           >
-            <Chip label="All" isActive={activeTagId === null} onPress={() => setActiveTagId(null)} />
+            <Chip
+              label="All"
+              isActive={activeTagId === null}
+              onPress={() => setActiveTagId(null)}
+            />
             {tags.map((tag) => (
               <Chip
                 key={tag.id}
-                label={tag.name}
+                label={shortenTagName(tag.name)}
                 isActive={activeTagId === tag.id}
                 onPress={() => setActiveTagId(tag.id)}
               />
@@ -115,7 +160,10 @@ export default function NotesScreen() {
         contentContainerStyle={{ paddingBottom: bottomInset }}
         keyboardDismissMode="on-drag"
         refreshControl={
-          <RefreshControl refreshing={isLoading && notes.length > 0} onRefresh={refresh} />
+          <RefreshControl
+            refreshing={isLoading && notes.length > 0}
+            onRefresh={refresh}
+          />
         }
       />
     </Screen>
