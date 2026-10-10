@@ -2,6 +2,9 @@ export const TELEGRAM_BOT_LINK =
   process.env.EXPO_PUBLIC_TELEGRAM_BOT_LINK ||
   "https://t.me/TetrisWhmcsPrushak111NoteBot";
 
+// "@BotName", derived from the link so it follows EXPO_PUBLIC_TELEGRAM_BOT_LINK.
+export const TELEGRAM_BOT_HANDLE = `@${TELEGRAM_BOT_LINK.replace(/\/+$/, "").split("/").pop()}`;
+
 // Verification code the bot sends: 6 digits.
 export const CODE_LENGTH = 6;
 
