@@ -1,0 +1,1 @@
+export { TagIconPicker } from "./TagIconPicker";
