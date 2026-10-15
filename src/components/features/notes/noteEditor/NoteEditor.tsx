@@ -102,6 +102,9 @@ export function NoteEditor({ note, defaultTagId }: NoteEditorProps) {
   const [tagId, setTagId] = useState<number | null>(note?.tag_id || defaultTagId || null);
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  // Reading shows plain text so scrolling can't focus the input; a tap
+  // switches to editing. A new note starts in editing.
+  const [isEditing, setIsEditing] = useState(!note);
 
   const autosave = useNoteAutosave({
     noteId: note?.id ?? null,
@@ -224,18 +227,38 @@ export function NoteEditor({ note, defaultTagId }: NoteEditorProps) {
 
         <View className="h-px bg-border/60" />
 
-        <TextInput
-          value={text}
-          onChangeText={changeText}
-          placeholder="Start writing…"
-          autoFocus={!note}
-          placeholderClassName="text-muted-foreground/60"
-          multiline
-          scrollEnabled={false}
-          textAlignVertical="top"
-          aria-label="Note text"
-          className="min-h-[240px] p-0 text-[15px] leading-6 text-foreground"
-        />
+        {isEditing ? (
+          <TextInput
+            value={text}
+            onChangeText={changeText}
+            onBlur={() => setIsEditing(false)}
+            placeholder="Start writing…"
+            autoFocus
+            placeholderClassName="text-muted-foreground/60"
+            multiline
+            scrollEnabled={false}
+            textAlignVertical="top"
+            aria-label="Note text"
+            className="min-h-[240px] p-0 text-[15px] leading-6 text-foreground"
+          />
+        ) : (
+          // onPress doesn't fire once the touch turns into a scroll.
+          <Pressable
+            onPress={() => setIsEditing(true)}
+            role="button"
+            aria-label="Edit note text"
+            className="min-h-[240px]"
+          >
+            <Text
+              className={cn(
+                "text-[15px] leading-6",
+                text ? "text-foreground" : "text-muted-foreground/60",
+              )}
+            >
+              {text || "Start writing…"}
+            </Text>
+          </Pressable>
+        )}
       </ScrollView>
 
       {isKeyboardVisible && (
