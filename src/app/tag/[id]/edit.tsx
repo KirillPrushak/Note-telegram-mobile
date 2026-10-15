@@ -29,7 +29,7 @@ export default function EditTagScreen() {
         {isLoading ? (
           <StateView type="loading" />
         ) : (
-          <StateView type="empty" icon="pricetags-outline" message="Tag not found" />
+          <StateView type="empty" message="Tag not found" />
         )}
       </View>
     );

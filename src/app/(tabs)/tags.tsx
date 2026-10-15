@@ -33,7 +33,7 @@ export default function TagsScreen() {
   const renderEmpty = () => {
     if (isLoading) return <StateView type="loading" />;
     if (error) return <StateView type="error" message={error} onRetry={refetch} />;
-    return <StateView type="empty" icon="pricetags-outline" message="No tags yet" />;
+    return <StateView type="empty" message="No tags yet" />;
   };
 
   return (

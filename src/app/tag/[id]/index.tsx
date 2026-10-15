@@ -37,7 +37,6 @@ export default function TagScreen() {
         ) : (
           <StateView
             type="empty"
-            icon="pricetags-outline"
             message="Tag not found"
           />
         )}
