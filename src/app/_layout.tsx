@@ -61,7 +61,11 @@ export default function RootLayout() {
             name="note/new"
             options={{ headerShown: true, title: "New note", presentation: "modal" }}
           />
-          <Stack.Screen name="tag/[id]" options={{ headerShown: true, title: "Tag" }} />
+          <Stack.Screen name="tag/[id]/index" options={{ headerShown: true, title: "Tag" }} />
+          <Stack.Screen
+            name="tag/[id]/edit"
+            options={{ headerShown: true, title: "Edit tag" }}
+          />
           <Stack.Screen
             name="tag/new"
             options={{ headerShown: true, title: "New tag", presentation: "modal" }}
