@@ -52,15 +52,9 @@ export default function RootLayout() {
       >
         <Stack.Protected guard={isLoggedIn}>
           <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="note/[id]/index" options={{ headerShown: true, title: "Note" }} />
-          <Stack.Screen
-            name="note/[id]/edit"
-            options={{ headerShown: true, title: "Edit note" }}
-          />
-          <Stack.Screen
-            name="note/new"
-            options={{ headerShown: true, title: "New note", presentation: "modal" }}
-          />
+          {/* Both open the same note editor (it sets its own header). */}
+          <Stack.Screen name="note/[id]/index" options={{ headerShown: true, title: "" }} />
+          <Stack.Screen name="note/new" options={{ headerShown: true, title: "" }} />
           <Stack.Screen name="tag/[id]/index" options={{ headerShown: true, title: "Tag" }} />
           <Stack.Screen
             name="tag/[id]/edit"

@@ -14,15 +14,19 @@ type ActionResult = { ok: true } | { ok: false; error: string };
 export function useNoteActions() {
   const reloadBoard = () => useBoardStore.getState().fetchNotes(NOTES_LIMIT_FOR_COUNT);
 
-  const create = async (data: CreateNoteDto): Promise<ActionResult> => {
+  // Resolves with the created note: the editor keeps its id so the next
+  // autosaves update it instead of creating duplicates.
+  const create = async (
+    data: CreateNoteDto,
+  ): Promise<{ ok: true; note: Note } | { ok: false; error: string }> => {
     try {
-      await notesUserApi.createNote(data);
+      const response = await notesUserApi.createNote(data);
       // The new note goes on top: restart the paginated list from page 1.
       await Promise.all([
         reloadBoard(),
         useNotesStore.getState().fetchNotes(1, NOTES_PAGE_SIZE),
       ]);
-      return { ok: true };
+      return { ok: true, note: response.data.data };
     } catch (error) {
       return { ok: false, error: getApiErrorMessage(error, "Couldn't create the note") };
     }

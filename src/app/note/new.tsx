@@ -1,25 +1,11 @@
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 
-import { NoteForm } from "@/components/features/notes/noteForm";
-import { FormScreen } from "@/components/layout/formScreen";
-import { useNoteActions } from "@/hooks/useNoteActions";
+import { NoteEditor } from "@/components/features/notes/noteEditor";
 
+// New note in the same editor; it is created on the first autosave.
 export default function NewNoteScreen() {
   // Opened from a tag's screen with that tag preselected.
   const { tagId } = useLocalSearchParams<{ tagId?: string }>();
-  const { create } = useNoteActions();
 
-  return (
-    <FormScreen>
-      <NoteForm
-        defaultTagId={tagId ? Number(tagId) : undefined}
-        submitLabel="Create note"
-        onSubmit={async (data) => {
-          const result = await create(data);
-          if (result.ok) router.back();
-          return result;
-        }}
-      />
-    </FormScreen>
-  );
+  return <NoteEditor defaultTagId={tagId ? Number(tagId) : undefined} />;
 }
