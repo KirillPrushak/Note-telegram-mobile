@@ -1,7 +1,8 @@
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { CodeStep } from "@/components/features/auth/codeStep";
+import { GiraffeMascot } from "@/components/common/giraffeMascot";
 import { UserIdStep } from "@/components/features/auth/userIdStep";
 import { useTelegramAuth } from "@/hooks/useTelegramAuth";
 
@@ -18,10 +19,14 @@ export default function AuthScreen() {
         keyboardShouldPersistTaps="handled"
         contentContainerClassName="flex-grow px-6"
         contentContainerStyle={{
-          paddingTop: insets.top + 48,
+          paddingTop: insets.top + 24,
           paddingBottom: insets.bottom + 32,
         }}
       >
+        <View className="mb-4 items-center">
+          <GiraffeMascot size={180} />
+        </View>
+
         {/* <View className="mb-9 items-center gap-2.5">
           <View className="h-14 w-14 items-center justify-center rounded-2xl bg-brand/10">
             <Icon name="paper-plane-outline" size={26} className="text-brand" />
