@@ -34,11 +34,7 @@ export function CopyButton({
   };
 
   return (
-    <Button
-      variant="outline"
-      onPress={copy}
-      className="h-11 flex-1 rounded-[10px]"
-    >
+    <Button variant="outline" onPress={copy} className="rounded-[10px]">
       <Icon
         name={isCopied ? "checkmark" : "copy-outline"}
         size={16}

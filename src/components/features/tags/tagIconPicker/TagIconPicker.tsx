@@ -10,9 +10,13 @@ interface TagIconPickerProps {
   onChange: (name: string) => void;
 }
 
-export function TagIconPicker({ value = DEFAULT_TAG_ICON, color, onChange }: TagIconPickerProps) {
+export function TagIconPicker({
+  value = DEFAULT_TAG_ICON,
+  color,
+  onChange,
+}: TagIconPickerProps) {
   return (
-    <View role="radiogroup" className="flex-row flex-wrap gap-2">
+    <View role="radiogroup" className="flex-row flex-wrap gap-3">
       {TAG_ICONS.map((item) => {
         const isSelected = item.name === value;
         return (
@@ -26,7 +30,11 @@ export function TagIconPicker({ value = DEFAULT_TAG_ICON, color, onChange }: Tag
               "h-11 w-11 items-center justify-center rounded-[10px] border active:opacity-70",
               isSelected ? "border-2" : "border-border bg-card",
             )}
-            style={isSelected ? { borderColor: color, backgroundColor: `${color}24` } : undefined}
+            style={
+              isSelected
+                ? { borderColor: color, backgroundColor: `${color}24` }
+                : undefined
+            }
           >
             <Icon
               name={item.icon}

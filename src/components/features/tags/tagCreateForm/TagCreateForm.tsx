@@ -3,7 +3,10 @@ import { TextInput, View } from "react-native";
 
 import { FormMessage } from "@/components/common/formMessage";
 import { PrimaryButton } from "@/components/common/primaryButton";
-import { SettingsSection, SwitchRow } from "@/components/common/settingsSection";
+import {
+  SettingsSection,
+  SwitchRow,
+} from "@/components/common/settingsSection";
 import { TagColorPicker } from "@/components/features/tags/tagColorPicker";
 import { TagIconPicker } from "@/components/features/tags/tagIconPicker";
 import { TAG_COLORS } from "@/constants/tagColors";
@@ -16,7 +19,11 @@ const DEFAULT_COLOR = TAG_COLORS[0];
 
 // Port of web CreateTagPanel: name goes to the server, the look and the
 // switches are saved locally for the new tag id.
-export function TagCreateForm({ onCreated }: { onCreated: (tag: Tag) => void }) {
+export function TagCreateForm({
+  onCreated,
+}: {
+  onCreated: (tag: Tag) => void;
+}) {
   const { create } = useTagActions();
   const setAppearance = useTagAppearanceStore((s) => s.setAppearance);
 
@@ -28,12 +35,16 @@ export function TagCreateForm({ onCreated }: { onCreated: (tag: Tag) => void }) 
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const color = TAG_COLORS.find((item) => item.name === colorName)?.value ?? DEFAULT_COLOR.value;
+  const color =
+    TAG_COLORS.find((item) => item.name === colorName)?.value ??
+    DEFAULT_COLOR.value;
 
   const submit = async () => {
     const trimmed = name.trim();
-    if (trimmed.length < 2) return setError("Tag name must be at least 2 characters");
-    if (trimmed.length > 50) return setError("Tag name must be less than 50 characters");
+    if (trimmed.length < 2)
+      return setError("Tag name must be at least 2 characters");
+    if (trimmed.length > 50)
+      return setError("Tag name must be less than 50 characters");
 
     setIsSubmitting(true);
     setError(null);
@@ -44,7 +55,12 @@ export function TagCreateForm({ onCreated }: { onCreated: (tag: Tag) => void }) 
       return;
     }
 
-    setAppearance(String(result.tag.id), { icon, color: colorName, isFavorite, botVisible });
+    setAppearance(String(result.tag.id), {
+      icon,
+      color: colorName,
+      isFavorite,
+      botVisible,
+    });
     onCreated(result.tag);
   };
 
@@ -94,7 +110,12 @@ export function TagCreateForm({ onCreated }: { onCreated: (tag: Tag) => void }) 
 
       {error && <FormMessage tone="error" message={error} />}
 
-      <PrimaryButton label="Create tag" icon="add" onPress={submit} isLoading={isSubmitting} />
+      <PrimaryButton
+        label="Create tag"
+        icon="add"
+        onPress={submit}
+        isLoading={isSubmitting}
+      />
     </View>
   );
 }

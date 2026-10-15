@@ -93,7 +93,7 @@ export default function ProfileScreen() {
 
         <ProfileInfoCard />
 
-        <View>
+        <View className="flex-col items-center gap-3">
           <View className="h-12 flex-row items-center gap-3 px-0.5">
             <Icon
               name="contrast-outline"
@@ -109,9 +109,9 @@ export default function ProfileScreen() {
           </View>
 
           <Button
-            variant="ghost"
+            variant="outline"
             onPress={confirmSignOut}
-            className="h-12 justify-start gap-3 px-0.5"
+            className="h-12 justify-center gap-3 px-0.5 w-full"
           >
             <Icon
               name="log-out-outline"
