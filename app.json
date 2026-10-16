@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Note-telegram-mobile",
+    "name": "Note Telegram",
     "slug": "Note-telegram-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,14 +8,13 @@
     "scheme": "notetelegrammobile",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "bundleIdentifier": "com.kirillprushak.notetelegram"
     },
     "android": {
+      "package": "com.kirillprushak.notetelegram",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "backgroundColor": "#F1E1DA",
+        "foregroundImage": "./assets/images/android-icon-foreground.png"
       },
       "predictiveBackGestureEnabled": false
     },
@@ -29,9 +28,12 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#ffffff",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "imageWidth": 200,
+          "dark": {
+            "backgroundColor": "#0a0a0a"
+          }
         }
       ],
       "expo-secure-store"
