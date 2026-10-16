@@ -1,17 +1,13 @@
 import type { UserInfo } from "@/types/users.interface";
 import { getTokenPayload, getUserIdFromToken } from "./token";
 
-const FALLBACK_USER_ID = process.env.EXPO_PUBLIC_NOTE_USER_ID || "2";
-
 export const getCurrentUserId = (): number => {
   const userId = getUserIdFromToken();
 
-  if (userId) {
-    return userId;
-  }
-
-  // Fallback for Dev
-  return Number(FALLBACK_USER_ID);
+  // No silent fallback to another account: without a token the request
+  // fails like any other error (the screens behind auth never get here).
+  if (!userId) throw new Error("Not signed in");
+  return userId;
 };
 
 export const getCurrentUserIdOrNull = (): number | null => {
