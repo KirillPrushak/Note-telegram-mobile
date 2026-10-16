@@ -1,15 +1,38 @@
-import { Stack, ThemeProvider } from "expo-router";
+import { type ErrorBoundaryProps, Stack, ThemeProvider } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useColorScheme } from "nativewind";
 import { useEffect, useState } from "react";
-import { Appearance, Platform } from "react-native";
+import { Appearance, Platform, View } from "react-native";
 import "../../global.css";
 
+import { GiraffeMascot } from "@/components/common/giraffeMascot";
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
 import { NAV_THEME } from "@/lib/theme";
 import { useAuthStore, useSettingsStore } from "@/store";
 
 SplashScreen.preventAutoHideAsync();
+
+// Last line of defense: a crash anywhere in the app shows this instead of a
+// blank screen. The error can happen before bootstrap, so hide the splash.
+export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
+  useEffect(() => {
+    console.error("app/error-boundary:", error);
+    SplashScreen.hide();
+  }, [error]);
+
+  return (
+    <View className="flex-1 items-center justify-center gap-3 bg-background px-8">
+      <GiraffeMascot size={140} mood="sad" />
+      <Text className="text-center text-[17px] font-semibold">Something went wrong</Text>
+      <Text className="text-center text-sm text-muted-foreground">{error.message}</Text>
+      <Button variant="outline" size="sm" onPress={retry}>
+        <Text>Try again</Text>
+      </Button>
+    </View>
+  );
+}
 
 export default function RootLayout() {
   const { colorScheme, setColorScheme } = useColorScheme();
